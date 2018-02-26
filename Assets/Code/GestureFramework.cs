@@ -29,6 +29,8 @@ namespace Senso {
         private Transform handFireballInst = null;
 
         public Player aPlayer;
+
+        private Coroutine FireballSpawnCoroutine;
 		
 		// Use this for initialization
 		void Start () 
@@ -88,7 +90,8 @@ namespace Senso {
                                 hands[i].VibrateFinger(EFingerType.Middle, 1000, 10);
                                 hands[i].VibrateFinger(EFingerType.Third, 1000, 10);
                                 hands[i].VibrateFinger(EFingerType.Little, 1000, 10);
-                                spawnEffect(fistEffect, hands[i].transform.position, hands[i].transform.rotation);
+                                var obj = spawnEffect(fistEffect, hands[i].transform.position, hands[i].transform.rotation);
+                                obj.Rotate(Vector3.forward * -45, Space.Self);
                             }
                         }
 					}
@@ -100,7 +103,7 @@ namespace Senso {
                                 //UnityEngine.Object.Destroy(handFireballInst.gameObject, 0.0f);
                                 var rigidBody = handFireballInst.GetComponent<Rigidbody>();
                                 rigidBody.isKinematic = false;
-                                Debug.Log(p.PalmAccelerometer);
+                                rigidBody.AddForce(p.PalmAccelerometer, ForceMode.VelocityChange);
                                 handFireballInst = null;
                                 // TODO: register collision
                             }
@@ -113,28 +116,31 @@ namespace Senso {
                                     hands[i].VibrateFinger(EFingerType.Index, 100, 20);
                                     hands[i].VibrateFinger(EFingerType.Little, 100, 20);
                                     var palmDirection = FindObjectWithTag(hands[i].transform, "PalmDirection");
-                                    spawnEffect(openPalmEffect, hands[i].transform.position, palmDirection.rotation);
+                                    var obj = spawnEffect(openPalmEffect, hands[i].transform.position, palmDirection.rotation);
+                                    obj.Rotate(Vector3.forward * -45, Space.Self);
                                 }
                             }
 						} else
                         {
                             // shield
-                            if (p.PalmSpeed.sqrMagnitude > 5 && p.PalmSpeed.y > 2.5f)
+                            if (p.PalmSpeed.sqrMagnitude > 5 && p.PalmSpeed.y > 1.5f)
                             {
                                 if (now - t_lastFired > fireEvery)
                                 {
-                                    StartCoroutine(vibrateCircle(hands[i]));
+                                    StartCoroutine(ShieldSpawn(hands[i]));
                                     var camera = FindObjectWithTag(transform.parent, "MainCamera");
                                     var obj = UnityEngine.Object.Instantiate(shieldEffect, camera.transform.position - Vector3.up, Quaternion.identity);
                                     aPlayer.SetShielded(true);
                                     UnityEngine.Object.Destroy(obj.gameObject, 10.0f);
                                     t_lastFired = now;
                                 }
-                            }/* else
+                            } else
                             {
-                                if (p.PalmRotation.eulerAngles.z > 165 && p.PalmRotation.eulerAngles.z < 195)
+                                /*if (handFireballInst == null && p.PalmRotation.eulerAngles.z > 165 && p.PalmRotation.eulerAngles.z < 195)
                                 {
                                     palmWaitFireball = true;
+                                    if (FireballSpawnCoroutine == null)
+                                        FireballSpawnCoroutine = StartCoroutine(vibrateCircle(hands[i], 2));
                                     t_palmOpened = t_palmOpened.Add(TimeSpan.FromSeconds(Time.deltaTime));
                                     if (t_palmOpened.TotalSeconds > 1.5f && handFireballInst == null)
                                     {
@@ -142,8 +148,8 @@ namespace Senso {
                                         handFireballInst = UnityEngine.Object.Instantiate(handFireball, palmDirection, false);
                                         handFireballInst.localPosition = Vector3.forward * 0.1f;
                                     }
-                                }
-                            }*/
+                                }*/
+                            }
                         }
                     } else {
                         // Pistol!
@@ -160,7 +166,15 @@ namespace Senso {
 							}
 						}
 					}
-                    if (!palmWaitFireball && t_palmOpened != TimeSpan.Zero) t_palmOpened = TimeSpan.Zero;
+                    /*if (!palmWaitFireball && t_palmOpened != TimeSpan.Zero)
+                    {
+                        t_palmOpened = TimeSpan.Zero;
+                        if (FireballSpawnCoroutine != null)
+                        {
+                            StopCoroutine(FireballSpawnCoroutine);
+                            FireballSpawnCoroutine = null;
+                        }
+                    }*/
 				}
 			}
 		}
@@ -192,11 +206,12 @@ namespace Senso {
 			return null;
 		}
 		
-		void spawnEffect(UnityEngine.Transform effect, Vector3 position, Quaternion rotation)
+		Transform spawnEffect(UnityEngine.Transform effect, Vector3 position, Quaternion rotation)
 		{
 			var obj = UnityEngine.Object.Instantiate(effect, position, rotation);
 			var comp = obj.GetComponentInChildren<RFX1_TransformMotion>(); 
 			comp.CollisionEnter += onEffectCollision;
+            return obj;
 		}
 		
 		void onEffectCollision(object sender, RFX1_TransformMotion.RFX1_CollisionInfo i)
@@ -218,7 +233,7 @@ namespace Senso {
 			}
 		}
 
-        IEnumerator vibrateCircle(Senso.Hand hand)
+        IEnumerator ShieldSpawn(Senso.Hand hand)
         {
             for (int i = 0; i < 10; ++i)
             {
@@ -228,5 +243,17 @@ namespace Senso {
             yield return new WaitForSeconds(5.0f);
             aPlayer.SetShielded(false);
         }
-	}
+
+        IEnumerator vibrateCircle(Senso.Hand hand, int cicles)
+        {
+            for (int k = 0; k < cicles; ++k)
+            {
+                for (int i = 0; i < 5; ++i)
+                {
+                    hand.VibrateFinger((EFingerType)i, 150, 10);
+                    yield return new WaitForSeconds(0.15f);
+                }
+            }
+        }
+    }
 }

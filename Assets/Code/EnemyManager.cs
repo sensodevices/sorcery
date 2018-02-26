@@ -16,11 +16,23 @@ public class EnemyManager : MonoBehaviour {
     private int enemiesCounter = 0;
     private DateTime t_lastSpawned;
 
+    private Enemy[] spawnedEnemies;
+
     // Use this for initialization
     void Start ()
     {
         t_lastSpawned = DateTime.MinValue;
         spawnEvery = TimeSpan.FromSeconds(SpawnEverySeconds);
+        spawnedEnemies = new Enemy[MaxEnemy];
+        var spawnPoint = new Vector3(0.0f, -999.0f, 0.0f);
+        for (int i = 0; i < MaxEnemy; ++i)
+        {
+            var obj = UnityEngine.Object.Instantiate(EnemyPrefab, spawnPoint, Quaternion.identity);
+            var enemyComp = obj.GetComponent<Enemy>();
+            enemyComp.aPlayer = aPlayer;
+            enemyComp.OnDead += onDie;
+            spawnedEnemies[i] = enemyComp;
+        }
     }
 	
 	// Update is called once per frame
@@ -28,16 +40,15 @@ public class EnemyManager : MonoBehaviour {
     {
         var now = DateTime.Now;
         if (enemiesSpawned < MaxEnemy && now - t_lastSpawned > spawnEvery)
-        {
-            int i = UnityEngine.Random.Range(0, 5);
-            var enemy = UnityEngine.Object.Instantiate(EnemyPrefab, SpawnPoints[i].transform.position, Quaternion.identity);
-            var enemyComp = enemy.GetComponent<Enemy>();
-            enemyComp.aPlayer = aPlayer;
-            enemyComp.OnDead += onDie;
-
-            ++enemiesCounter;
-            ++enemiesSpawned;
-            t_lastSpawned = now;
+        { // Spawn enemy
+            int spawnPointInd = UnityEngine.Random.Range(0, 5);
+            var ind = getFirstUnusedEnemyInd();
+            if (ind >= 0) { 
+                spawnedEnemies[ind].Spawn(SpawnPoints[spawnPointInd].position);
+                ++enemiesCounter;
+                ++enemiesSpawned;
+                t_lastSpawned = now;
+            }
         }
 	}
 
@@ -47,12 +58,15 @@ public class EnemyManager : MonoBehaviour {
         if (comp != null)
         {
             --enemiesSpawned;
-            var collider = comp.gameObject.GetComponent<BoxCollider>();
-            if (collider != null)
-            {
-                collider.enabled = false;
-            }
-            UnityEngine.Object.Destroy(comp.gameObject, 3.0f);
         }
+    }
+
+    private int getFirstUnusedEnemyInd()
+    {
+        for (int i = 0; i < MaxEnemy; ++i)
+        {
+            if (spawnedEnemies[i].IsDead) return i;
+        }
+        return -1;
     }
 }

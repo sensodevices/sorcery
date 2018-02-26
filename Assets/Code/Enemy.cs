@@ -7,9 +7,10 @@ public class Enemy : MonoBehaviour {
 
     public Player aPlayer;
     private Animator anim;
+    private BoxCollider collider;
 
     private bool isHitting;
-    private float health = 100.0f;
+    private float health = 0.0f;
 
     private Vector3 startPosition;
     private Vector3 targetPosition;
@@ -17,22 +18,20 @@ public class Enemy : MonoBehaviour {
     public float speedModifier = 0.5f;
     private bool isHit = false;
 
+    public float MaxHealth = 100.0f;
+    public bool IsDead { get { return health <= 0.0f; } }
+
     public event EventHandler<EnemyInfo> OnDead;
 
     // Use this for initialization
     void Start () {
         anim = GetComponent<Animator>();
-
-        startPosition = transform.position;
-        var diff = transform.position - aPlayer.transform.position;
-        diff.y = 0.0f;
-        diff = diff.normalized * 6.48f;
-        targetPosition = aPlayer.transform.position + diff;
+        collider = GetComponent<BoxCollider>();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if (health <= 0.0f) return;
+        if (IsDead) return;
         float dist = Vector3.Distance(aPlayer.transform.position, transform.position);
         if (dist <= 6.50)
         {
@@ -76,12 +75,38 @@ public class Enemy : MonoBehaviour {
         }
     }
 
+    public void Spawn(Vector3 spawnPoint)
+    {
+        isHit = false;
+        isHitting = false;
+
+        lerpMovement = 0.0f;
+        transform.position = spawnPoint;
+        startPosition = spawnPoint;
+        targetPosition = aPlayer.transform.position;
+
+        health = MaxHealth;
+
+        if (collider != null)
+        {
+            collider.enabled = true;
+        }
+
+        anim.SetBool("Died", false);
+        anim.SetBool("Flying", false);
+        anim.Play("Idle");
+    }
+
     private void Die()
     {
         var handler = OnDead;
         if (handler != null)
             handler(this, new EnemyInfo());
         anim.SetBool("Died", true);
+        if (collider != null)
+        {
+            collider.enabled = false;
+        }
     }
 
     public void DoHit()
