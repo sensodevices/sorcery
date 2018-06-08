@@ -1,0 +1,163 @@
+fileFormatVersion: 2
+guid: 616d361226e221b488b718632137abe1
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: hand_r
+    100002: index_01_r
+    100004: index_02_r
+    100006: index_03_r
+    100008: middle_01_r
+    100010: middle_02_r
+    100012: middle_03_r
+    100014: pinky_01_r
+    100016: pinky_02_r
+    100018: pinky_03_r
+    100020: ring_01_r
+    100022: ring_02_r
+    100024: ring_03_r
+    100026: //RootNode
+    100028: SM_Male_Character01_Small
+    100030: SM_Male_Character01_Small 1
+    100032: thumb_01_r
+    100034: thumb_02_r
+    100036: thumb_03_r
+    100038: Armature
+    100040: index_03_r_end
+    100042: middle_03_r_end
+    100044: pinky_03_r_end
+    100046: ring_03_r_end
+    100048: SM_Male_Character01_Small.001
+    100050: thumb_03_r_end
+    100052: Camera
+    100054: index_03_r_end_end
+    100056: Lamp
+    100058: middle_03_r_end_end
+    100060: pinky_03_r_end_end
+    100062: ring_03_r_end_end
+    100064: thumb_03_r_end_end
+    100066: Right Hand
+    400000: hand_r
+    400002: index_01_r
+    400004: index_02_r
+    400006: index_03_r
+    400008: middle_01_r
+    400010: middle_02_r
+    400012: middle_03_r
+    400014: pinky_01_r
+    400016: pinky_02_r
+    400018: pinky_03_r
+    400020: ring_01_r
+    400022: ring_02_r
+    400024: ring_03_r
+    400026: //RootNode
+    400028: SM_Male_Character01_Small
+    400030: SM_Male_Character01_Small 1
+    400032: thumb_01_r
+    400034: thumb_02_r
+    400036: thumb_03_r
+    400038: Armature
+    400040: index_03_r_end
+    400042: middle_03_r_end
+    400044: pinky_03_r_end
+    400046: ring_03_r_end
+    400048: SM_Male_Character01_Small.001
+    400050: thumb_03_r_end
+    400052: Camera
+    400054: index_03_r_end_end
+    400056: Lamp
+    400058: middle_03_r_end_end
+    400060: pinky_03_r_end_end
+    400062: ring_03_r_end_end
+    400064: thumb_03_r_end_end
+    400066: Right Hand
+    2000000: Camera
+    2100000: lambert2
+    4300000: SM_Male_Character01_Small
+    4300002: SM_Male_Character01_Small.001
+    7400000: Take 001
+    9500000: //RootNode
+    10800000: Lamp
+    13700000: SM_Male_Character01_Small 1
+    13700002: SM_Male_Character01_Small.001
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
